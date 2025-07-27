@@ -7,59 +7,37 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // সব পোস্ট দেখানো
     public function index()
     {
-        //
+        return Post::all();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    // নতুন পোস্ট তৈরি করা
     public function store(Request $request)
     {
-        //
+        $post = Post::create($request->only(['title', 'content']));
+        return response()->json($post, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Post $post)
+    // নির্দিষ্ট পোস্ট দেখানো
+    public function show($id)
     {
-        //
+        return Post::findOrFail($id);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Post $post)
+    // পোস্ট আপডেট করা
+    public function update(Request $request, $id)
     {
-        //
+        $post = Post::findOrFail($id);
+        $post->update($request->only(['title', 'content']));
+        return response()->json($post);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Post $post)
+    // পোস্ট ডিলিট করা
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Post $post)
-    {
-        //
+        Post::destroy($id);
+        return response()->json(null, 204);
     }
 }
