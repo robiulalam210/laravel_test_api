@@ -8,8 +8,9 @@ use Illuminate\Validation\ValidationException;
 class StudentController extends Controller
 {
     // সব ছাত্র দেখাবে
-    public function index()
-    {
+   public function index()
+{
+    try {
         $students = Student::all();
 
         return response()->json([
@@ -17,7 +18,15 @@ class StudentController extends Controller
             'data' => $students,
             'message' => 'Students retrieved successfully.'
         ], 200);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Error fetching students.',
+            'error' => $e->getMessage()
+        ], 500);
     }
+}
+
 
     // নতুন ছাত্র তৈরি করবে
 
